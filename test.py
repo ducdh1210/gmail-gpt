@@ -18,17 +18,17 @@ function_descriptions = [
                     "items": {
                         "product": {
                             "type": "string",
-                            "description": "the product name that user wants to buy"
+                            "description": "the product name that user wants to buy",
                         },
                         "amount": {
                             "type": "string",
-                            "description": "the amount that user wants to buy for the speciifc product"
-                        }
-                    }
+                            "description": "the amount that user wants to buy for the speciifc product",
+                        },
+                    },
                 }
             },
-            "required": ["product", "amount"]
-        }
+            "required": ["product", "amount"],
+        },
     }
 ]
 
@@ -64,15 +64,15 @@ product_catalogue = """
 [{"product": "t-shirt", "price": "$23"}, {"product": "pants", "price": "$15"}, {"product": "shoes", "price": "$39"}]
 """
 
-query =  f"This is the product catalogue: {product_catalogue} Please calculate the deal size:{content}"
+query = f"This is the product catalogue: {product_catalogue} Please calculate the deal size:{content}"
 
 messages = [{"role": "user", "content": query}]
 
 response = openai.ChatCompletion.create(
-    model="gpt-4-0613",
+    model="gpt-3.5-turbo-0613",
     messages=messages,
-    functions = function_descriptions,
-    function_call="auto"
+    functions=function_descriptions,
+    function_call="auto",
 )
 
 print(response)

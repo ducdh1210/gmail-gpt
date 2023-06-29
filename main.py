@@ -18,41 +18,51 @@ function_descriptions = [
             "properties": {
                 "companyName": {
                     "type": "string",
-                    "description": "the name of the company that sent the email"
-                },                        
+                    "description": "the name of the company that sent the email",
+                },
                 "priority": {
                     "type": "string",
-                    "description": "Try to give a priority score to this email based on how likely this email will leads to a good business opportunity, from 0 to 10; 10 most important"
+                    "description": "Try to give a priority score to this email based on how likely this email will leads to a good business opportunity, from 0 to 10; 10 most important",
                 },
                 "category": {
                     "type": "string",
-                    "description": "Try to categorise this email into categories like those: 1. Sales 2. customer support; 3. consulting; 4. partnership; etc."
+                    "description": "Try to categorise this email into categories like those: 1. Sales 2. customer support; 3. consulting; 4. partnership; etc.",
                 },
                 "product": {
                     "type": "string",
-                    "description": "Try to identify which product the client is interested in, if any"
+                    "description": "Try to identify which product the client is interested in, if any",
                 },
-                "amount":{
+                "amount": {
                     "type": "string",
-                    "description": "Try to identify the amount of products the client wants to purchase, if any"
+                    "description": "Try to identify the amount of products the client wants to purchase, if any",
                 },
-                "nextStep":{
+                "nextStep": {
                     "type": "string",
-                    "description": "What is the suggested next step to move this forward?"
-                }
+                    "description": "What is the suggested next step to move this forward?",
+                },
             },
-            "required": ["companyName", "amount", "product", "priority", "category", "nextStep"]
-        }
+            "required": [
+                "companyName",
+                "amount",
+                "product",
+                "priority",
+                "category",
+                "nextStep",
+            ],
+        },
     }
 ]
+
 
 class Email(BaseModel):
     from_email: str
     content: str
 
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 @app.post("/")
 def analyse_email(email: Email):
@@ -62,10 +72,10 @@ def analyse_email(email: Email):
     messages = [{"role": "user", "content": query}]
 
     response = openai.ChatCompletion.create(
-        model="gpt-4-0613",
+        model="gpt-3.5-turbo-0613",
         messages=messages,
-        functions = function_descriptions,
-        function_call="auto"
+        functions=function_descriptions,
+        function_call="auto",
     )
 
     arguments = response.choices[0]["message"]["function_call"]["arguments"]
@@ -82,6 +92,5 @@ def analyse_email(email: Email):
         "amount": amount,
         "priority": priority,
         "category": category,
-        "nextStep": nextStep
+        "nextStep": nextStep,
     }
-
